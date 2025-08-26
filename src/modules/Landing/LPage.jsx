@@ -9,7 +9,7 @@ function Lpage() {
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
-  useEffect(() => {
+  useEffect(() =>{
     if (inView) {
       controls.start("visible");
     }

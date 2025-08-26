@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import user from "../context/contextU";
@@ -7,6 +7,11 @@ import Api from "../../../Api_path/api";
 import { toast } from "react-toastify";
 function Register() {
   let [res, setRes] = useState({});
+  let [err,setErr]=useReducer(chose,{
+    exist:false,
+    invalidP:false,
+    Nomatch:false
+  })
   let { User } = Api();
   let userData = useContext(user);
   let navi = useNavigate();
@@ -22,6 +27,17 @@ function Register() {
     wishlist: [],
     created_at: Date.now(),
   });
+  //reducer function
+  function chose(state,action){
+    switch(action.type){
+      case "Exist":
+        return {...state,exist:true}
+      case "invalidP":
+        return {...state,invalidP:true}
+      case "Nomatch":
+        return {...state,Nomatch:true}
+    }
+  }
   function change(e) {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
@@ -39,20 +55,29 @@ function Register() {
         : (userAvailable = userAvailable);
     });
     if (userAvailable) {
-      alert("User with this email already exist ");
+      toast.error("User with this email already exist ");
+      setErr({type:"Exist"});
     } else {
-      if (userT.name != "" && userT.email != "" && userT.password != "") {
-        if (userT.password == con) {
-          console.log(userT);
-          console.log(con);
-          console.log(userData);
-          sett();
-          navi("/Userlogin");
-        } else {
-          toast.error("password is wrong")
+      console.log(userT.password)
+      if (userT.name != "" && userT.email != "" && userT.password != ""){
+        if(userT.password.length >=8){
+          console.log("password is right ")
+          if (userT.password == con) {
+            console.log(userT);
+            console.log(con);
+            console.log(userData);
+            sett();
+            navi("/Userlogin");
+          } else {
+            setErr({type:"Nomatch"})
+          }
         }
-      } else {
-        toast.error("User doest exist");
+        else{
+        setErr({type:"invalidP"})
+       }
+      }
+      else{
+        toast.error("Fill the form properly")
       }
     }
   }
@@ -122,6 +147,7 @@ function Register() {
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-white placeholder-gray-600"
                 placeholder="your@email.com"
               />
+              {err.exist && <p>User is already exist</p>}
             </div>
 
             {/* Password Field */}
@@ -140,6 +166,7 @@ function Register() {
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-white placeholder-gray-600"
                 placeholder="••••••••"
               />
+              {err.invalidP && <p>Password Must contain 8 letters or numbers </p> }
             </div>
 
             {/* Confirm Password Field */}
@@ -157,6 +184,7 @@ function Register() {
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-white placeholder-gray-600"
                 placeholder="••••••••"
               />
+              {err.Nomatch&&<p>Password Doesnt match </p>}
             </div>
 
             {/* Remember Me */}

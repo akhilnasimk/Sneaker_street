@@ -1,9 +1,10 @@
 import { useContext, useEffect, useLayoutEffect, useState } from "react"
-import CartContext from "../context/cartContext"
+import {CartContext} from "../context/cartContext"
 import logo from "../../../assets/slogo.png"
 import Api from "../../../Api_path/api"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
+import SecondNav from "../navbar/navbar"
 
 function Cart(){
     let {User}=Api();
@@ -40,7 +41,8 @@ function Cart(){
 
     function incre(id){
         setTotal((prev)=>prev.map((val)=>{ //maping through the prev object 
-            if(val.id==id){ //finding the object that changed quantity 
+            if(val.id==id &&val.count> val.quantity){ //finding the object that changed quantity 
+              // console.log(val);
                 return {...val, quantity: val.quantity + 1};  //change the old quantily +1 (spreading is importent )
             }
             return val; //else return old object 
@@ -63,18 +65,7 @@ function Cart(){
     return(
         <>
      <div className="min-h-screen bg-gray-950 text-white px-4 sm:px-12 lg:px-24 py-6">
-  {/* Navbar - Fixed */}
-  <nav className="flex items-center justify-between px-6 py-4 bg-black/80 border border-gray-700 rounded-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 max-w-7xl w-[90%] sm:w-[80%] lg:w-[70%] backdrop-blur-sm">
-    <div className="flex items-center gap-3">
-      <img src={logo} alt="Logo" className="w-25 h-20 object-contain" />
-      <span className="text-xl font-bold">Sneaker Street</span>
-    </div>
-    <Link to={"/products"}>
-      <button className="px-4 py-2 bg-violet-600 rounded-lg hover:bg-violet-700 transition">
-        Home
-      </button>
-    </Link>
-  </nav>
+  <SecondNav></SecondNav>
 
   {/* Spacer for fixed navbar */}
   <div className="h-24 mt-16"></div>
@@ -90,7 +81,7 @@ function Cart(){
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {total.map((product) => (
           <div key={product.id} className="bg-gray-900 rounded-xl p-5 border border-gray-700 hover:border-violet-500 transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/10">
-            <Link to={`/Pdetails`} state={{product}}>
+            <Link to={`/Pdetails/${product.id}`}>
             <div className="aspect-square w-full bg-gray-800 rounded-xl mb-4 overflow-hidden">
               <img src={product.images} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             </div>
@@ -105,9 +96,9 @@ function Cart(){
                 <div className="text-sm text-gray-400">Total: ${(product.price * product.quantity).toLocaleString()}</div>
               </div>
               <div className="flex items-center gap-3">
-                <button onClick={() => decre(product.id)} disabled={product.quantity <= 1} className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-lg hover:bg-gray-700 active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed">−</button>
+                <button onClick={() => decre(product.id,product)} disabled={product.quantity <= 1 } className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-lg hover:bg-gray-700 active:scale-95 transition disabled:opacity-50 disabled:cursor-not-allowed">−</button>
                 <span className="w-6 text-center font-semibold">{product.quantity}</span>
-                <button onClick={() => incre(product.id)} className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-lg hover:bg-gray-700 active:scale-95 transition">+</button>
+                <button onClick={() => incre(product.id)} disabled={product.count <=product.quantity} className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-lg hover:bg-gray-700 active:scale-95 transition">+</button>
               </div>
             </div>
 

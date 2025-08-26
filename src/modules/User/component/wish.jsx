@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import wishContext from "../context/wishContext";
+import {wishContext} from "../context/wishContext";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/slogo.png"; 
 import axios from "axios";
 import Api from "../../../Api_path/api";
+import SecondNav from "../navbar/navbar";
 
 function WishList() {
   const { WishL, setWishL } = useContext(wishContext);
@@ -19,17 +20,7 @@ function WishList() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-white px-4 sm:px-12 lg:px-24 py-24">
-    <nav className="flex items-center justify-between px-6 py-4 bg-black/80 border border-gray-700 rounded-xl fixed top-4 left-1/2 transform -translate-x-1/2 z-50 max-w-7xl w-[90%] sm:w-[80%] lg:w-[70%] backdrop-blur-sm">
-      <div className="flex items-center gap-3">
-        <img src={logo} alt="Logo" className="w-25 h-20 object-contain" />
-        <span className="text-xl font-bold">Sneaker Street</span>
-      </div>
-      <Link to={"/products"}>
-        <button className="px-4 py-2 bg-violet-600 rounded-lg hover:bg-violet-700 transition">
-          Home
-        </button>
-      </Link>
-    </nav>
+    <SecondNav></SecondNav>
     <h1 className="text-4xl sm:text-5xl font-extrabold mb-12 text-center bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-lg mt-16">
       Wish List
     </h1>

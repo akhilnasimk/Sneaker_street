@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import user from "../context/contextU";
 import axios from "axios";
 import Api from "../../../Api_path/api";
 import { toast } from "react-toastify";
@@ -10,25 +9,37 @@ function UserLogin() {
   let navig = useNavigate();
   let { User } = Api();
   let [loginD, setLoginD] = useState({ email: "", password: "", });
-
+  let localuser=JSON.parse(localStorage.getItem("Localuser"))
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("Localuser")).islogedin) {
+    if (localuser.islogedin && localuser.isAdmin==false ) {
       navig("/products");
+    }
+    else if(JSON.parse(localStorage.getItem("Localuser")).islogedin==true && JSON.parse(localStorage.getItem("Localuser")).isAdmin==true ){
+      navig("/AdminDash")
     }
   }, []);
 
   async function check() {
     if (loginD.email !== "" && loginD.password !== "") {
       let available = await axios.get(User + `?email=${loginD.email}&&password=${loginD.password}`);
-      if (available.data.length != 0) {
+      let b = available.data;
+      console.log(b[0].isBlock);
+      if (available.data.length != 0  && b[0].isBlock===false)  {
         let a = available.data;
-        console.log("iam in");
-        localStorage.setItem("Localuser", JSON.stringify({ islogedin: true, userId: a[0].id, isAdmin: a[0].isAdmin, }));
+        localStorage.setItem("Localuser", JSON.stringify({ islogedin: true, userId: a[0].id, isAdmin: a[0].isAdmin  }));
         console.log(JSON.parse(localStorage.getItem("Localuser")));
         toast.success("Login successful")
-        navig("/products");
-      } else {
-        toast.error("user not availabel");
+        if(a[0].isAdmin==true){
+          navig("/AdminDash");
+        }
+        else{
+          navig("/products");
+        }
+        
+      } else if(b[0].isBlock==true){
+        toast.error("You have been blocked by Admin");
+      }else{
+          toast.error("user not availabel");
       }
     } else {
       toast.error("fill the form ");

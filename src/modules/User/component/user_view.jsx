@@ -4,10 +4,10 @@ import ads from "../../../assets/ads.mp4";
 import axios from "axios";
 import Api from "../../../Api_path/api";
 import { Link, useNavigate } from "react-router-dom";
-import CartContext from "../context/cartContext";
+import {CartContext} from "../context/cartContext";
 import { motion, AnimatePresence } from "framer-motion";
-import wishContext from "../context/wishContext";
-import OrderContext from "../context/BuyContext";
+import {wishContext} from "../context/wishContext";
+import {OrderContext} from "../context/BuyContext";
 import { toast } from "react-toastify";
 
 function ProductP() {
@@ -25,6 +25,7 @@ function ProductP() {
   let navig = useNavigate();
 
   useEffect(() => {
+    
     async function fetchProducts() {
       let res = await axios.get(Product);
       setProducts(res.data);
@@ -163,30 +164,54 @@ function ProductP() {
   return (
     <div className="min-h-screen bg-black">
       <nav className="bg-black shadow-md fixed top-0 left-0 w-full z-50">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between mt-3 ">
           {/* Logo */}
           <div className="flex items-center">
             <img src={logo} alt="Sneaker Street Logo" className="w-36 h-24 object-contain" />
           </div>
 
           {/* Search Bar */}
-          <div className="flex flex-1 max-w-md mx-4">
-            <div className="relative w-full group">
-              <input onFocus={()=>setSearchFocused(true)}   onChange={(e) => setSearchProduct(products.filter((val) => val.name.toLowerCase().includes(e.target.value.toLowerCase())))} type="text" placeholder="Search for sneakers..." className="w-full px-4 py-2 rounded-full border border-purple-500 bg-black text-white placeholder-gray-400 outline-none transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 group-hover:border-purple-400" />
-              <button className="absolute right-3 top-2 text-purple-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-purple-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <div className="flex flex-1 max-w-md mx-4 ">
+            <div className="relative w-full group p-4 ">
+              <input
+                onFocus={() => setSearchFocused(true)}
+                onChange={(e) =>
+                  setSearchProduct(
+                    products.filter((val) =>
+                      val.name.toLowerCase().includes(e.target.value.toLowerCase())
+                    )
+                  )
+                }
+                type="text"
+                placeholder="Search sneakers..."
+                className="w-full px-5 py-2.5 rounded-2xl border border-purple-500/50 bg-gradient-to-r from-black via-gray-900 to-black text-white placeholder-gray-500 outline-none transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-400 group-hover:border-purple-400 shadow-lg shadow-purple-900/20"
+              />
+              <button className="absolute right-8 top-7  text-purple-400 transition-transform duration-300 group-hover:scale-110 group-hover:text-purple-300">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
               </button>
             </div>
           </div>
+
 
           {/* Desktop Icons */}
           <div className="hidden md:flex items-center space-x-6 text-white">
             {/* Wishlist */}
             <button onClick={() => iseligible("/WishList")}>
               <div className="relative cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-purple-400 mr-16">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 <AnimatePresence mode="popLayout">
@@ -202,7 +227,7 @@ function ProductP() {
             {/* Cart */}
             <button onClick={() => iseligible("/Cart")}>
               <div className="relative cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-purple-400 mr-16">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <AnimatePresence mode="popLayout">
@@ -218,7 +243,7 @@ function ProductP() {
             {/* Orders */}
             <button onClick={() => iseligible("/Orders")}>
               <div className="relative cursor-pointer transition-transform duration-300 hover:scale-110 hover:text-purple-400 mr-16">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v10a2 2 0 01-2 2z" />
                 </svg>
                 <AnimatePresence mode="popLayout">
@@ -287,7 +312,7 @@ function ProductP() {
       {searchFocused && searchProduct.length > 0 && (
   <div onClick={()=>setSearchFocused(true)} className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-black/95 border border-purple-500/30 rounded-lg shadow-xl z-50 mt-2">
     {searchProduct.slice(0, 5).map((product) => (
-      <Link to={'/Pdetails'} state={{product}}>
+      <Link to={`/Pdetails/${product.id}`}>
         <div
         // onClick={()=>foo(val)} 
         key={product.id}
@@ -309,7 +334,7 @@ function ProductP() {
   </div>
 )}
 
-      <div className="flex justify-center items-center mt-10 relative overflow-hidden h-[400px] mt-36">
+      <div className="flex justify-center items-center  relative overflow-hidden h-[400px] mt-36">
         {images.map((src, index) => (
           <img key={index} src={src} alt={`Slide ${index}`} style={getImageStyle(index)} />
         ))}
@@ -334,10 +359,10 @@ function ProductP() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </button>
-              {product.isActive === false && (
+              {product.count <= 0 && (
                 <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">SOLD OUT</div>
               )}
-              <Link to={`/Pdetails`} state={{ product }}>
+              <Link to={`/Pdetails/${product.id}`}>
                 <div className="relative aspect-square w-full overflow-hidden">
                   <img src={product.images} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
                 </div>
@@ -346,11 +371,11 @@ function ProductP() {
                 <h2 className="text-base sm:text-lg font-bold mb-1 line-clamp-1">{product.name}</h2>
                 <p className="text-gray-300 text-xs sm:text-sm mb-2 line-clamp-2">{product.description}</p>
                 <p className="text-violet-400 text-base sm:text-lg font-bold mb-3">₹{product.price.toLocaleString()}</p>
-                <button onClick={() => { AddCart(product.id); }} className={`w-full py-2 sm:py-2.5 px-3 rounded-md font-medium transition-colors duration-200 flex items-center justify-center gap-1 ${cartS.find((val) => val.id == product.id) ? "bg-gray-600 cursor-not-allowed" : "bg-violet-600 hover:bg-violet-700"} text-xs sm:text-sm`} disabled={cartS.find((val) => val.id == product.id)}>
+                <button onClick={() => { AddCart(product.id); }} className={`w-full py-2 sm:py-2.5 px-3 rounded-md font-medium transition-colors duration-200 flex items-center justify-center gap-1 ${cartS.find((val) => val.id == product.id) ||product.count <= 0? "bg-gray-600 cursor-not-allowed" : "bg-violet-600 hover:bg-violet-700"} text-xs sm:text-sm`} disabled={cartS.find((val) => val.id == product.id) ||product.count <= 0}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
-                  {cartS.find((val) => val.id == product.id) ? "Already in the Cart" : "Add to Cart"}
+                  {cartS.find((val) => val.id == product.id) ? "Already in the Cart" : product.count <= 0? "Item Sold Out": "Add to Cart"}
                 </button>
               </div>
             </div>
@@ -364,6 +389,7 @@ function ProductP() {
         </div>
       </div>
     </div>
+    
   );
 }
 

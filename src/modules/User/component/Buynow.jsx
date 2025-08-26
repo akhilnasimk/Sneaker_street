@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import user from "../context/contextU";
 import axios from "axios";
 import Api from "../../../Api_path/api";
-import OrderContext from "../context/BuyContext";
+import {OrderContext} from "../context/BuyContext";
 import { toast } from "react-toastify";
+import {CartContext} from "../context/cartContext";
+
+
 function Buy(){
     let navig=useNavigate()
     let {OldOrder,setOldOrder}=useContext(OrderContext);
     let [total,setTotal]=useState(0);
     let a=useLocation()
-    let {User}=Api();
+    let {User,Product}=Api();
     let [userdata,setUserdata]=useState([])
     let [order,setOrder]=useState(()=>{
     return(
     {
         id: Date.now(),
+        userId:JSON.parse(localStorage.getItem("Localuser")).userId,
         name:"",
         email:"",
         address:"",
@@ -24,10 +28,12 @@ function Buy(){
         Pyment:"",
         orderdate:"",
         deliverDate : "",
-        status:"Processing",
+        status:"pending",
         } )
     })
+        
     useEffect(()=>{
+        
         console.log(a.state)
         async function fetchh(){
             // console.log(a.state)
@@ -57,11 +63,18 @@ function Buy(){
         console.log(OldOrder)
     },[OldOrder])
     async function addOrder(ord){
-        // console.log(order)
+        axios.patch(User+`/${JSON.parse(localStorage.getItem("Localuser")).userId}`,{cart:[]});
+        a.state.forEach(async(element) => {
+          console.log(element);
+          let pro= await axios.get(Product+`/${element.id}`);
+          let changed= await axios.patch(Product+`/${element.id}`,{count:pro.data.count-element.quantity});
+          console.log(changed)
+
+        });
         setOldOrder((prev)=>[...prev,order])
         let userD= await axios.get(User+`/${JSON.parse(localStorage.getItem("Localuser")).userId}`)
         let set = await axios.patch(User+`/${JSON.parse(localStorage.getItem("Localuser")).userId}`,{orders:[...userD.data.orders,order]});
-        console.log(set)
+        // console.log(set)
         toast.success("Order have been placed ")
         navig('/Orders')
         // console.log(OldOrder.data)
