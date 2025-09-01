@@ -1,6 +1,6 @@
 function Api(){
-    const User="http://localhost:5001/user";
-    const Product="http://localhost:5001/Product";
+    const User="https://database-p4n2.onrender.com/user";
+    const Product="https://database-p4n2.onrender.com/Product";
     return {User,Product}
 }
 
