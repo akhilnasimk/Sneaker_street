@@ -9,7 +9,7 @@ export default function WishC({children}){
     useEffect(() => {
         async function fee() {
           let Wish= await axios.get(User+`/${JSON.parse(localStorage.getItem("Localuser")).userId}`)
-          setWishL(Wish.data.wishlist);
+          setWishL(Wish?Wish.data.wishlist:[]);
         }
         fee();
       }, []); 

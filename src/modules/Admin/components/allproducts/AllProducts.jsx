@@ -111,7 +111,7 @@ export default function AllProducts() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-700">
-                                {filtP.slice(0,page).map((product) => (
+                                {filtP.slice(page-5,page).map((product) => (
                                     <tr key={product.id} className="hover:bg-gray-700/30 transition-colors duration-200">
                                         <td className="px-6 lg:px-8 py-5">
                                             <div className="flex items-center">

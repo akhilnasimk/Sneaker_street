@@ -70,7 +70,7 @@ const ProductModal = ({ isOpen, onClose,product }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70 backdrop-blur-sm">
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${isOpen? 'backdrop-blur-sm opacity-100' : 'backdrop-blur-0 opacity-0'}  bg-opacity-70 backdrop-blur-sm`}>
       <div className="relative bg-gray-800 border-2 border-gray-700 rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-700">

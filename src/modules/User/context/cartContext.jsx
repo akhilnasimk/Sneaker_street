@@ -9,7 +9,7 @@ export default  function CartC({children}){
     useEffect(()=>{
         async function carting(){
             let CarC = await axios.get(User + `/${JSON.parse(localStorage.getItem("Localuser")).userId}/?cart`);
-            setCartS(CarC.data.cart);
+            setCartS(CarC?CarC.data.cart:[]);
         }
         carting();
     },[])

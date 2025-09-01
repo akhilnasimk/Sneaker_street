@@ -28,13 +28,15 @@ function ProductP() {
     
     async function fetchProducts() {
       let res = await axios.get(Product);
-      setProducts(res.data);
+      setProducts( res.data);
       console.log(JSON.parse(localStorage.getItem("Localuser")).userId);
       let CarC = await axios.get(User + `/${JSON.parse(localStorage.getItem("Localuser")).userId}/?cart`);
-      setCartS(CarC.data.cart);
+      setCartS(CarC?CarC.data.cart:[]);
       let Wish = await axios.get(User + `/${JSON.parse(localStorage.getItem("Localuser")).userId}`);
-      setWishL(Wish.data.wishlist);
-      setOldOrder(Wish.data.orders)
+      setWishL(Wish?Wish.data.wishlist:[]);
+      setOldOrder(Wish?Wish.data.orders:[]);
+      
+      
     }
     fetchProducts();
   }, [JSON.parse(localStorage.getItem("Localuser")).userId]);
@@ -132,7 +134,7 @@ function ProductP() {
     if (JSON.parse(localStorage.getItem("Localuser")).islogedin) {
       navig(way);
     } else {
-      navig("/Userlogin");
+      navig("/");
     }
   }
   
@@ -215,11 +217,12 @@ function ProductP() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
                 <AnimatePresence mode="popLayout">
-                  {WishL.length >= 0 && (
+                  {WishL?WishL.length >= 0 && (
                     <motion.span key={WishL.length} initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ type: "spring", stiffness: 500, damping: 20, }} className="absolute -top-2 -right-3 bg-purple-600 text-xs rounded-full px-1.5 py-0.5">
                       {WishL.length == 0 ? 0 : WishL.length}
                     </motion.span>
-                  )}
+                  ):
+                  0};
                 </AnimatePresence>
               </div>
             </button>
@@ -231,11 +234,11 @@ function ProductP() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <AnimatePresence mode="popLayout">
-                  {cartS.length >= 0 && (
+                  {cartS?cartS.length >= 0 && (
                     <motion.span key={cartS.length} initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ type: "spring", stiffness: 500, damping: 20, }} className="absolute -top-2 -right-3 bg-purple-600 text-xs rounded-full px-1.5 py-0.5">
                       {cartS.length == 0 ? 0 : cartS.length}
                     </motion.span>
-                  )}
+                  ):null}
                 </AnimatePresence>
               </div>
             </button>
@@ -247,11 +250,11 @@ function ProductP() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v10a2 2 0 01-2 2z" />
                 </svg>
                 <AnimatePresence mode="popLayout">
-                  {OldOrder.length >= 0 && (
+                  {OldOrder?OldOrder.length >= 0 && (
                     <motion.span key={OldOrder.length} initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} transition={{ type: "spring", stiffness: 500, damping: 20, }} className="absolute -top-2 -right-3 bg-purple-600 text-xs rounded-full px-1.5 py-0.5">
                       {OldOrder.length == 0 ? 0 : OldOrder.length}
                     </motion.span>
-                  )}
+                  ):0}
                 </AnimatePresence>
               </div>
             </button>
@@ -354,7 +357,7 @@ function ProductP() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredP.map((product) => (
             <div key={product.id} className="bg-black/70 text-white rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.02] border border-gray-700 hover:border-violet-500 shadow-lg hover:shadow-violet-500/20 relative">
-              <button onClick={() => addwish(product.id)} className={`absolute top-2 right-2 z-10 bg-black/80 text-white p-1.5 rounded-full ${WishL.find((val) => val.id === product.id) ? "bg-red-500 text-white hover:bg-red-600" : "bg-black/80 text-white hover:bg-red-500 hover:text-white"}`} title="Add to Wishlist">
+              <button onClick={() => addwish(product.id)} className={`absolute top-2 right-2 z-10 bg-black/80 text-white p-1.5 rounded-full ${WishL&&WishL.find((val) => val.id === product.id) ? "bg-red-500 text-white hover:bg-red-600" : "bg-black/80 text-white hover:bg-red-500 hover:text-white"}`} title="Add to Wishlist">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
@@ -371,11 +374,11 @@ function ProductP() {
                 <h2 className="text-base sm:text-lg font-bold mb-1 line-clamp-1">{product.name}</h2>
                 <p className="text-gray-300 text-xs sm:text-sm mb-2 line-clamp-2">{product.description}</p>
                 <p className="text-violet-400 text-base sm:text-lg font-bold mb-3">₹{product.price.toLocaleString()}</p>
-                <button onClick={() => { AddCart(product.id); }} className={`w-full py-2 sm:py-2.5 px-3 rounded-md font-medium transition-colors duration-200 flex items-center justify-center gap-1 ${cartS.find((val) => val.id == product.id) ||product.count <= 0? "bg-gray-600 cursor-not-allowed" : "bg-violet-600 hover:bg-violet-700"} text-xs sm:text-sm`} disabled={cartS.find((val) => val.id == product.id) ||product.count <= 0}>
+                <button onClick={() => { AddCart(product.id); }} className={`w-full py-2 sm:py-2.5 px-3 rounded-md font-medium transition-colors duration-200 flex items-center justify-center gap-1 ${cartS&&cartS.find((val) => val.id == product.id) ||product.count <= 0? "bg-gray-600 cursor-not-allowed" : "bg-violet-600 hover:bg-violet-700"} text-xs sm:text-sm`} disabled={cartS&&cartS.find((val) => val.id == product.id) ||product.count <= 0}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
-                  {cartS.find((val) => val.id == product.id) ? "Already in the Cart" : product.count <= 0? "Item Sold Out": "Add to Cart"}
+                  {cartS&&cartS.find((val) => val.id == product.id) ? "Already in the Cart" : product.count <= 0? "Item Sold Out": "Add to Cart"}
                 </button>
               </div>
             </div>

@@ -33,7 +33,10 @@ function Buy(){
     })
         
     useEffect(()=>{
-        
+        if(JSON.parse(localStorage.getItem("Localuser")).islogedin==false){
+          navig("/")
+          toast.error("Please Login first");
+        }
         console.log(a.state)
         async function fetchh(){
             // console.log(a.state)

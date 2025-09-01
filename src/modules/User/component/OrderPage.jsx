@@ -68,7 +68,7 @@ function Orders() {
         <h1 className="text-3xl font-bold mb-8 text-center">My Orders</h1>
 
         <div className="space-y-10">
-          {OldOrder.map((order, index) => (
+          {OldOrder.sort((a,b)=> new Date(b.orderdate)-new Date(a.orderdate)).map((order, index) => (
             <div key={index} className="bg-black/70 border border-gray-700 rounded-2xl p-8 shadow-lg flex flex-col gap-6">
               
               {/* Order Header */}
