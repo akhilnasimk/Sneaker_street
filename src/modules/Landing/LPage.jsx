@@ -10,6 +10,9 @@ function Lpage() {
   const [ref, inView] = useInView();
 
   useEffect(() =>{
+    if(!JSON.parse(localStorage.getItem("Localuser"))){
+      localStorage.setItem("Localuser", JSON.stringify({ islogedin: false, userId: "", isAdmin: "", }));
+    }
     if (inView) {
       controls.start("visible");
     }
