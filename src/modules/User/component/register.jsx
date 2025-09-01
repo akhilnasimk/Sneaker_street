@@ -1,7 +1,7 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import user from "../context/contextU";
+import { UserContext } from "../../Admin/AdminContext/UserC";
 import axios from "axios";
 import Api from "../../../Api_path/api";
 import { toast } from "react-toastify";
@@ -13,7 +13,7 @@ function Register() {
     Nomatch:false
   })
   let { User } = Api();
-  let userData = useContext(user);
+  let {user} = useContext(UserContext);
   let navi = useNavigate();
   let [con, setCon] = useState("");
   let [userT, setUser] = useState({
@@ -49,7 +49,7 @@ function Register() {
   function add(e) {
     e.preventDefault();
     let userAvailable = false;
-    userData.map((val) => {
+    user.map((val) => {
       val.email == userT.email
         ? (userAvailable = true)
         : (userAvailable = userAvailable);
@@ -65,7 +65,7 @@ function Register() {
           if (userT.password == con) {
             console.log(userT);
             console.log(con);
-            console.log(userData);
+            console.log(user);
             sett();
             navi("/Userlogin");
           } else {

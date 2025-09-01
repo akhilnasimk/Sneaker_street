@@ -30,7 +30,6 @@ import OrderPage from "./modules/Admin/components/Orders/OrderPage";
 import MangeUser from "./modules/Admin/components/UserManage/ManageUser";
 import UserC from "./modules/Admin/AdminContext/UserC";
 import NotFound from "./404Page/Error";
-
 function App() {
   return (
     <>
@@ -39,7 +38,7 @@ function App() {
           <Route path="/" element={<Lpage />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/Userlogin" element={<UserLogin />} />
-          <Route path="/UserRegister" element={<Register />} />
+          <Route path="/UserRegister" element={<UserC><Register /></UserC>} />
           <Route path="/forgot_pass" element={<Forgot />} />
           <Route path="/products" element={<Order><WishC><CartC><ProductP /></CartC></WishC></Order>} />
           <Route element={<UserRoute />}>
