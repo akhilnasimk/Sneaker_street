@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Api from "../../../Api_path/api";
@@ -10,7 +10,7 @@ function UserLogin() {
   let { User } = Api();
   let [loginD, setLoginD] = useState({ email: "", password: "", });
   let localuser=JSON.parse(localStorage.getItem("Localuser"))
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (localuser.islogedin && localuser.isAdmin==false ) {
       navig("/products");
     }
