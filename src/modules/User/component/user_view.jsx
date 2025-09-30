@@ -289,7 +289,7 @@ function ProductP() {
               <div className="absolute right-0 mt-2 w-48 bg-black/90 backdrop-blur-sm shadow-xl rounded-lg overflow-hidden z-50 border border-gray-700">
                 <ul className="text-white divide-y divide-gray-700">
                   <li className="flex items-center justify-between px-4 py-3 hover:bg-purple-600/30 cursor-pointer transition-colors">
-                    Wishlist <span className="bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{WishL.length}</span>
+                    Wishlist <span className="bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{WishL&&WishL.length}</span>
                   </li>
                   <li className="flex items-center justify-between px-4 py-3 hover:bg-purple-600/30 cursor-pointer transition-colors">
                     Cart <span className="bg-purple-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{cartS.length}</span>
